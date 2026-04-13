@@ -46,9 +46,11 @@ jobs:
       - name: Build firmware
         working-directory: firmware
         run: |
-          pio run
-          pio run -t buildfs
-          pio run -t build_merged
+          for env in m5dial cyddial; do
+            pio run -e $env
+            pio run -e $env -t buildfs
+            pio run -e $env -t build_merged
+          done
 
       - name: Prepare Pages site
         run: |
