@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FluidDial WiFi Preview Installer</title>
+  <script
+    type="module"
+    src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"
+  ></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+    h1 { font-size: 1.8rem; margin-bottom: 0.25rem; }
+    .subtitle { color: #8b949e; margin-bottom: 2rem; font-size: 0.95rem; }
+    .warning {
+      background: #1c1206;
+      border: 1px solid #d29922;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      max-width: 540px;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: #e3b341;
+    }
+    .cards {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 700px;
+    }
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 1.5rem;
+      width: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .card h2 { font-size: 1.2rem; }
+    .card p { color: #8b949e; font-size: 0.85rem; text-align: center; }
+    esp-web-install-button button {
+      background: #238636;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.6rem 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    esp-web-install-button button:hover { background: #2ea043; }
+    .instructions {
+      margin-top: 2rem;
+      max-width: 540px;
+      font-size: 0.85rem;
+      color: #8b949e;
+      line-height: 1.6;
+    }
+    .instructions h3 { color: #e6edf3; margin-bottom: 0.5rem; }
+    .instructions ol { padding-left: 1.25rem; }
+    .instructions li { margin-bottom: 0.35rem; }
+    a { color: #58a6ff; }
+  </style>
+</head>
+<body>
+  <h1>FluidDial WiFi Preview</h1>
+  <p class="subtitle">Pre-release installer for the WiFi-Version branch</p>
+
+  <div class="warning">
+    This is a <strong>preview build</strong> from an unmerged pull request.
+    It may contain bugs. Use at your own risk. You can always reflash with the
+    <a href="https://install.fluidnc.com" target="_blank">official installer</a>.
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h2>M5Dial</h2>
+      <p>ESP32-S3 &mdash; M5Stack M5Dial</p>
+      <esp-web-install-button manifest="manifest_m5dial.json">
+        <button slot="activate">Install M5Dial</button>
+        <span slot="unsupported">Your browser doesn't support Web Serial</span>
+        <span slot="not-allowed">Not allowed to use Web Serial</span>
+      </esp-web-install-button>
+    </div>
+
+    <div class="card">
+      <h2>CYD Dial</h2>
+      <p>ESP32 &mdash; Cheap Yellow Display</p>
+      <esp-web-install-button manifest="manifest_cyddial.json">
+        <button slot="activate">Install CYD Dial</button>
+        <span slot="unsupported">Your browser doesn't support Web Serial</span>
+        <span slot="not-allowed">Not allowed to use Web Serial</span>
+      </esp-web-install-button>
+    </div>
+  </div>
+
+  <div class="instructions">
+    <h3>How to install</h3>
+    <ol>
+      <li>Use <strong>Chrome</strong>, <strong>Edge</strong>, or another Chromium-based browser.</li>
+      <li>Connect your dial to your computer via USB.</li>
+      <li>Click the <strong>Install</strong> button for your hardware above.</li>
+      <li>Select the serial port when prompted.</li>
+      <li>Wait for the flash to complete.</li>
+    </ol>
+  </div>
+</body>
+</html>

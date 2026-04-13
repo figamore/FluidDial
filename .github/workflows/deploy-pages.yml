@@ -1,0 +1,98 @@
+name: Deploy Web Installer to GitHub Pages
+
+on:
+  push:
+    branches: [gh-pages-installer]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout installer page
+
+      - uses: actions/checkout@v4
+        name: Checkout firmware source
+        with:
+          ref: WiFi-Version
+          path: firmware
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.platformio/.cache
+          key: ${{ runner.os }}-pio
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install PlatformIO Core
+        run: pip install --upgrade platformio
+
+      - name: Build firmware
+        working-directory: firmware
+        run: |
+          pio run
+          pio run -t buildfs
+          pio run -t build_merged
+
+      - name: Prepare Pages site
+        run: |
+          mkdir -p _site
+          cp docs/index.html _site/
+          cp firmware/.pio/build/m5dial/merged-flash.bin _site/m5dial.bin
+          cp firmware/.pio/build/cyddial/merged-flash.bin _site/cyddial.bin
+
+          COMMIT_SHA=$(cd firmware && git rev-parse --short HEAD)
+          COMMIT_DATE=$(cd firmware && git log -1 --format=%cd --date=short)
+
+          cat > _site/manifest_m5dial.json << EOF
+          {
+            "name": "FluidDial WiFi (M5Dial)",
+            "version": "WiFi-Version@${COMMIT_SHA} (${COMMIT_DATE})",
+            "builds": [
+              {
+                "chipFamily": "ESP32-S3",
+                "parts": [
+                  { "path": "m5dial.bin", "offset": 0 }
+                ]
+              }
+            ]
+          }
+          EOF
+
+          cat > _site/manifest_cyddial.json << EOF
+          {
+            "name": "FluidDial WiFi (CYD Dial)",
+            "version": "WiFi-Version@${COMMIT_SHA} (${COMMIT_DATE})",
+            "builds": [
+              {
+                "chipFamily": "ESP32",
+                "parts": [
+                  { "path": "cyddial.bin", "offset": 0 }
+                ]
+              }
+            ]
+          }
+          EOF
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
