@@ -64,7 +64,7 @@ jobs:
         working-directory: fluidnc
         run: |
           pio run -e wifi
-          pio run -e wifi-s3
+          pio run -e wifi_s3
 
       - name: Prepare Pages site
         run: |
@@ -79,7 +79,7 @@ jobs:
           cp fluiddial/.pio/build/m5dial/merged-flash.bin _site/m5dial.bin
           cp fluiddial/.pio/build/cyddial/merged-flash.bin _site/cyddial.bin
           cp fluidnc/.pio/build/wifi/firmware.bin _site/fluidnc_esp32_firmware.bin
-          cp fluidnc/.pio/build/wifi-s3/firmware.bin _site/fluidnc_esp32s3_firmware.bin
+          cp fluidnc/.pio/build/wifi_s3/firmware.bin _site/fluidnc_esp32s3_firmware.bin
 
           cat > _site/manifest_m5dial.json << EOF
           {
