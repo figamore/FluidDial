@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v4
         name: Checkout firmware source
         with:
-          ref: WiFi-Version
+          ref: feature/esp-now
           path: firmware
 
       - uses: actions/cache@v4
@@ -64,8 +64,8 @@ jobs:
 
           cat > _site/manifest_m5dial.json << EOF
           {
-            "name": "FluidDial WiFi (M5Dial)",
-            "version": "WiFi-Version@${COMMIT_SHA} (${COMMIT_DATE})",
+            "name": "FluidDial ESP-NOW (M5Dial)",
+            "version": "esp-now@${COMMIT_SHA} (${COMMIT_DATE})",
             "builds": [
               {
                 "chipFamily": "ESP32-S3",
@@ -79,8 +79,8 @@ jobs:
 
           cat > _site/manifest_cyddial.json << EOF
           {
-            "name": "FluidDial WiFi (CYD Dial)",
-            "version": "WiFi-Version@${COMMIT_SHA} (${COMMIT_DATE})",
+            "name": "FluidDial ESP-NOW (CYD Dial)",
+            "version": "esp-now@${COMMIT_SHA} (${COMMIT_DATE})",
             "builds": [
               {
                 "chipFamily": "ESP32",
