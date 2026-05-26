@@ -43,10 +43,7 @@ jobs:
           path: |
             ~/.cache/pip
             ~/.platformio/.cache
-            fluiddial/.pio
-            fluidnc/.pio
-          key: ${{ runner.os }}-pio-${{ hashFiles('fluiddial/src/**', 'fluiddial/platformio.ini', 'fluidnc/src/**', 'fluidnc/platformio.ini') }}
-          restore-keys: ${{ runner.os }}-pio-
+          key: ${{ runner.os }}-pio-toolchain
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
