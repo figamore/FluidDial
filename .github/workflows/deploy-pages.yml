@@ -63,11 +63,8 @@ jobs:
       - name: Build FluidNC firmware
         working-directory: fluidnc
         run: |
-          for env in wifi wifi-s3; do
-            pio run -e $env
-            pio run -e $env -t buildfs
-            pio run -e $env -t build_merged
-          done
+          pio run -e wifi
+          pio run -e wifi-s3
 
       - name: Prepare Pages site
         run: |
@@ -81,8 +78,8 @@ jobs:
 
           cp fluiddial/.pio/build/m5dial/merged-flash.bin _site/m5dial.bin
           cp fluiddial/.pio/build/cyddial/merged-flash.bin _site/cyddial.bin
-          cp fluidnc/.pio/build/wifi/merged-flash.bin _site/fluidnc_esp32.bin
-          cp fluidnc/.pio/build/wifi-s3/merged-flash.bin _site/fluidnc_esp32s3.bin
+          cp fluidnc/.pio/build/wifi/firmware.bin _site/fluidnc_esp32_firmware.bin
+          cp fluidnc/.pio/build/wifi-s3/firmware.bin _site/fluidnc_esp32s3_firmware.bin
 
           cat > _site/manifest_m5dial.json << EOF
           {
@@ -114,35 +111,6 @@ jobs:
           }
           EOF
 
-          cat > _site/manifest_fluidnc_esp32.json << EOF
-          {
-            "name": "FluidNC ESP-NOW (ESP32)",
-            "version": "esp-now@${NC_SHA} (${NC_DATE})",
-            "builds": [
-              {
-                "chipFamily": "ESP32",
-                "parts": [
-                  { "path": "fluidnc_esp32.bin", "offset": 0 }
-                ]
-              }
-            ]
-          }
-          EOF
-
-          cat > _site/manifest_fluidnc_esp32s3.json << EOF
-          {
-            "name": "FluidNC ESP-NOW (ESP32-S3)",
-            "version": "esp-now@${NC_SHA} (${NC_DATE})",
-            "builds": [
-              {
-                "chipFamily": "ESP32-S3",
-                "parts": [
-                  { "path": "fluidnc_esp32s3.bin", "offset": 0 }
-                ]
-              }
-            ]
-          }
-          EOF
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

@@ -91,6 +91,7 @@
     .instructions ol { padding-left: 1.25rem; }
     .instructions li { margin-bottom: 0.35rem; }
     a { color: #58a6ff; }
+    .download { font-size: 0.8rem; color: #58a6ff; }
   </style>
 </head>
 <body>
@@ -142,25 +143,30 @@
   </div>
 
   <div class="section">
-    <div class="section-title">Flash FluidNC</div>
+    <div class="section-title">FluidNC Firmware</div>
+    <p style="color:#8b949e; font-size:0.875rem; margin-bottom:1.25rem;">
+      Download <code style="background:#0d1117;padding:0.1rem 0.35rem;border-radius:4px;">firmware.bin</code> for your controller and update via the
+      <strong style="color:#e6edf3;">FluidNC web UI OTA</strong>, or
+      <a href="https://github.com/figamore/FluidNC/tree/feature/esp-now" target="_blank" rel="noopener noreferrer">build from source</a>.
+    </p>
     <div class="cards">
       <div class="card">
         <h2>ESP32</h2>
         <p>Standard ESP32 &mdash; most FluidNC controller boards</p>
-        <esp-web-install-button manifest="manifest_fluidnc_esp32.json">
-          <button slot="activate">Flash FluidNC (ESP32)</button>
-          <span slot="unsupported">Your browser doesn't support Web Serial</span>
-          <span slot="not-allowed">Not allowed to use Web Serial</span>
-        </esp-web-install-button>
+        <a href="fluidnc_esp32_firmware.bin" download>
+          <button style="background:#1f6feb;color:#fff;border:none;border-radius:6px;padding:0.6rem 1.5rem;font-size:1rem;cursor:pointer;font-weight:600;">
+            Download (ESP32)
+          </button>
+        </a>
       </div>
       <div class="card">
         <h2>ESP32-S3</h2>
         <p>ESP32-S3 &mdash; newer FluidNC controller boards</p>
-        <esp-web-install-button manifest="manifest_fluidnc_esp32s3.json">
-          <button slot="activate">Flash FluidNC (ESP32-S3)</button>
-          <span slot="unsupported">Your browser doesn't support Web Serial</span>
-          <span slot="not-allowed">Not allowed to use Web Serial</span>
-        </esp-web-install-button>
+        <a href="fluidnc_esp32s3_firmware.bin" download>
+          <button style="background:#1f6feb;color:#fff;border:none;border-radius:6px;padding:0.6rem 1.5rem;font-size:1rem;cursor:pointer;font-weight:600;">
+            Download (ESP32-S3)
+          </button>
+        </a>
       </div>
     </div>
   </div>
