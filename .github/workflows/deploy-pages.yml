@@ -43,7 +43,10 @@ jobs:
           path: |
             ~/.cache/pip
             ~/.platformio/.cache
-          key: ${{ runner.os }}-pio
+            fluiddial/.pio
+            fluidnc/.pio
+          key: ${{ runner.os }}-pio-${{ hashFiles('fluiddial/src/**', 'fluiddial/platformio.ini', 'fluidnc/src/**', 'fluidnc/platformio.ini') }}
+          restore-keys: ${{ runner.os }}-pio-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -54,17 +57,18 @@ jobs:
       - name: Build FluidDial firmware
         working-directory: fluiddial
         run: |
-          for env in m5dial cyddial; do
-            pio run -e $env
-            pio run -e $env -t buildfs
-            pio run -e $env -t build_merged
-          done
+          pio run
+          pio run -t buildfs
+          pio run -t build_merged
 
       - name: Build FluidNC firmware
         working-directory: fluidnc
         run: |
           pio run -e wifi
           pio run -e wifi_s3
+
+      - name: List FluidNC build outputs
+        run: find fluidnc/.pio/build -name "*.bin" | sort
 
       - name: Prepare Pages site
         run: |
