@@ -25,10 +25,18 @@ jobs:
         name: Checkout installer page
 
       - uses: actions/checkout@v4
-        name: Checkout firmware source
+        name: Checkout FluidDial firmware
         with:
+          repository: figamore/FluidDial
           ref: feature/esp-now
-          path: firmware
+          path: fluiddial
+
+      - uses: actions/checkout@v4
+        name: Checkout FluidNC firmware
+        with:
+          repository: figamore/FluidNC
+          ref: feature/esp-now
+          path: fluidnc
 
       - uses: actions/cache@v4
         with:
@@ -43,10 +51,19 @@ jobs:
       - name: Install PlatformIO Core
         run: pip install --upgrade platformio
 
-      - name: Build firmware
-        working-directory: firmware
+      - name: Build FluidDial firmware
+        working-directory: fluiddial
         run: |
           for env in m5dial cyddial; do
+            pio run -e $env
+            pio run -e $env -t buildfs
+            pio run -e $env -t build_merged
+          done
+
+      - name: Build FluidNC firmware
+        working-directory: fluidnc
+        run: |
+          for env in wifi wifi-s3; do
             pio run -e $env
             pio run -e $env -t buildfs
             pio run -e $env -t build_merged
@@ -56,16 +73,21 @@ jobs:
         run: |
           mkdir -p _site
           cp docs/index.html _site/
-          cp firmware/.pio/build/m5dial/merged-flash.bin _site/m5dial.bin
-          cp firmware/.pio/build/cyddial/merged-flash.bin _site/cyddial.bin
 
-          COMMIT_SHA=$(cd firmware && git rev-parse --short HEAD)
-          COMMIT_DATE=$(cd firmware && git log -1 --format=%cd --date=short)
+          DIAL_SHA=$(cd fluiddial && git rev-parse --short HEAD)
+          DIAL_DATE=$(cd fluiddial && git log -1 --format=%cd --date=short)
+          NC_SHA=$(cd fluidnc && git rev-parse --short HEAD)
+          NC_DATE=$(cd fluidnc && git log -1 --format=%cd --date=short)
+
+          cp fluiddial/.pio/build/m5dial/merged-flash.bin _site/m5dial.bin
+          cp fluiddial/.pio/build/cyddial/merged-flash.bin _site/cyddial.bin
+          cp fluidnc/.pio/build/wifi/merged-flash.bin _site/fluidnc_esp32.bin
+          cp fluidnc/.pio/build/wifi-s3/merged-flash.bin _site/fluidnc_esp32s3.bin
 
           cat > _site/manifest_m5dial.json << EOF
           {
             "name": "FluidDial ESP-NOW (M5Dial)",
-            "version": "esp-now@${COMMIT_SHA} (${COMMIT_DATE})",
+            "version": "esp-now@${DIAL_SHA} (${DIAL_DATE})",
             "builds": [
               {
                 "chipFamily": "ESP32-S3",
@@ -80,12 +102,42 @@ jobs:
           cat > _site/manifest_cyddial.json << EOF
           {
             "name": "FluidDial ESP-NOW (CYD Dial)",
-            "version": "esp-now@${COMMIT_SHA} (${COMMIT_DATE})",
+            "version": "esp-now@${DIAL_SHA} (${DIAL_DATE})",
             "builds": [
               {
                 "chipFamily": "ESP32",
                 "parts": [
                   { "path": "cyddial.bin", "offset": 0 }
+                ]
+              }
+            ]
+          }
+          EOF
+
+          cat > _site/manifest_fluidnc_esp32.json << EOF
+          {
+            "name": "FluidNC ESP-NOW (ESP32)",
+            "version": "esp-now@${NC_SHA} (${NC_DATE})",
+            "builds": [
+              {
+                "chipFamily": "ESP32",
+                "parts": [
+                  { "path": "fluidnc_esp32.bin", "offset": 0 }
+                ]
+              }
+            ]
+          }
+          EOF
+
+          cat > _site/manifest_fluidnc_esp32s3.json << EOF
+          {
+            "name": "FluidNC ESP-NOW (ESP32-S3)",
+            "version": "esp-now@${NC_SHA} (${NC_DATE})",
+            "builds": [
+              {
+                "chipFamily": "ESP32-S3",
+                "parts": [
+                  { "path": "fluidnc_esp32s3.bin", "offset": 0 }
                 ]
               }
             ]

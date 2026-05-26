@@ -22,36 +22,52 @@
     }
     h1 { font-size: 1.8rem; margin-bottom: 0.25rem; }
     .subtitle { color: #8b949e; margin-bottom: 2rem; font-size: 0.95rem; }
-    .warning {
+    .info {
       background: #1c1206;
       border: 1px solid #d29922;
       border-radius: 8px;
       padding: 1rem 1.25rem;
-      max-width: 540px;
-      margin-bottom: 2rem;
+      max-width: 640px;
+      width: 100%;
+      margin-bottom: 2.5rem;
       font-size: 0.9rem;
-      line-height: 1.5;
+      line-height: 1.7;
       color: #e3b341;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .section {
+      width: 100%;
+      max-width: 700px;
+      margin-bottom: 2.5rem;
+    }
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #e6edf3;
+      border-bottom: 1px solid #30363d;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.25rem;
     }
     .cards {
       display: flex;
       gap: 1.5rem;
       flex-wrap: wrap;
       justify-content: center;
-      max-width: 700px;
     }
     .card {
       background: #161b22;
       border: 1px solid #30363d;
       border-radius: 12px;
       padding: 1.5rem;
-      width: 300px;
+      width: 280px;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 1rem;
     }
-    .card h2 { font-size: 1.2rem; }
+    .card h2 { font-size: 1.1rem; }
     .card p { color: #8b949e; font-size: 0.85rem; text-align: center; }
     esp-web-install-button button {
       background: #238636;
@@ -65,8 +81,8 @@
     }
     esp-web-install-button button:hover { background: #2ea043; }
     .instructions {
-      margin-top: 2rem;
-      max-width: 540px;
+      max-width: 640px;
+      width: 100%;
       font-size: 0.85rem;
       color: #8b949e;
       line-height: 1.6;
@@ -79,50 +95,73 @@
 </head>
 <body>
   <h1>FluidDial ESP-NOW Preview</h1>
-  <p class="subtitle">Pre-release installer for the feature/esp-now branch</p>
+  <p class="subtitle">Pre-release installer &mdash; feature/esp-now branch</p>
 
-  <div class="warning">
+  <div class="info">
     <p>
-      <strong>Repo:</strong>
+      <strong>FluidDial:</strong>
       <a href="https://github.com/figamore/FluidDial/tree/feature/esp-now" target="_blank" rel="noopener noreferrer">
         figamore/FluidDial (feature/esp-now)
       </a>
     </p>
-
     <p>
-      <strong>Wiki:</strong>
-      <a href="http://wiki.fluidnc.com/en/hardware/official/FluidDial_Wireless" target="_blank" rel="noopener noreferrer">
-        FluidDial Wireless
+      <strong>FluidNC:</strong>
+      <a href="https://github.com/figamore/FluidNC/tree/feature/esp-now" target="_blank" rel="noopener noreferrer">
+        figamore/FluidNC (feature/esp-now)
       </a>
     </p>
-
     <p>
       To revert to the official version, use the
-      <a href="https://install.fluidnc.com" target="_blank" rel="noopener noreferrer">
-        official installer
-      </a>.
+      <a href="https://install.fluidnc.com" target="_blank" rel="noopener noreferrer">official FluidNC installer</a>
+      and the <a href="https://installer.fluidnc.com" target="_blank" rel="noopener noreferrer">official FluidDial installer</a>.
     </p>
   </div>
 
-  <div class="cards">
-    <div class="card">
-      <h2>M5Dial</h2>
-      <p>ESP32-S3 &mdash; M5Stack M5Dial</p>
-      <esp-web-install-button manifest="manifest_m5dial.json">
-        <button slot="activate">Install M5Dial</button>
-        <span slot="unsupported">Your browser doesn't support Web Serial</span>
-        <span slot="not-allowed">Not allowed to use Web Serial</span>
-      </esp-web-install-button>
+  <div class="section">
+    <div class="section-title">Flash Dial</div>
+    <div class="cards">
+      <div class="card">
+        <h2>M5Dial</h2>
+        <p>ESP32-S3 &mdash; M5Stack M5Dial</p>
+        <esp-web-install-button manifest="manifest_m5dial.json">
+          <button slot="activate">Flash M5Dial</button>
+          <span slot="unsupported">Your browser doesn't support Web Serial</span>
+          <span slot="not-allowed">Not allowed to use Web Serial</span>
+        </esp-web-install-button>
+      </div>
+      <div class="card">
+        <h2>CYD Dial</h2>
+        <p>ESP32 &mdash; Cheap Yellow Display</p>
+        <esp-web-install-button manifest="manifest_cyddial.json">
+          <button slot="activate">Flash CYD Dial</button>
+          <span slot="unsupported">Your browser doesn't support Web Serial</span>
+          <span slot="not-allowed">Not allowed to use Web Serial</span>
+        </esp-web-install-button>
+      </div>
     </div>
+  </div>
 
-    <div class="card">
-      <h2>CYD Dial</h2>
-      <p>ESP32 &mdash; Cheap Yellow Display</p>
-      <esp-web-install-button manifest="manifest_cyddial.json">
-        <button slot="activate">Install CYD Dial</button>
-        <span slot="unsupported">Your browser doesn't support Web Serial</span>
-        <span slot="not-allowed">Not allowed to use Web Serial</span>
-      </esp-web-install-button>
+  <div class="section">
+    <div class="section-title">Flash FluidNC</div>
+    <div class="cards">
+      <div class="card">
+        <h2>ESP32</h2>
+        <p>Standard ESP32 &mdash; most FluidNC controller boards</p>
+        <esp-web-install-button manifest="manifest_fluidnc_esp32.json">
+          <button slot="activate">Flash FluidNC (ESP32)</button>
+          <span slot="unsupported">Your browser doesn't support Web Serial</span>
+          <span slot="not-allowed">Not allowed to use Web Serial</span>
+        </esp-web-install-button>
+      </div>
+      <div class="card">
+        <h2>ESP32-S3</h2>
+        <p>ESP32-S3 &mdash; newer FluidNC controller boards</p>
+        <esp-web-install-button manifest="manifest_fluidnc_esp32s3.json">
+          <button slot="activate">Flash FluidNC (ESP32-S3)</button>
+          <span slot="unsupported">Your browser doesn't support Web Serial</span>
+          <span slot="not-allowed">Not allowed to use Web Serial</span>
+        </esp-web-install-button>
+      </div>
     </div>
   </div>
 
@@ -130,10 +169,10 @@
     <h3>How to install</h3>
     <ol>
       <li>Use <strong>Chrome</strong>, <strong>Edge</strong>, or another Chromium-based browser.</li>
-      <li>Connect your dial to your computer via USB.</li>
-      <li>Click the <strong>Install</strong> button for your hardware above.</li>
+      <li>Connect the device you want to flash to your computer via USB.</li>
+      <li>Click the appropriate <strong>Flash</strong> button above.</li>
       <li>Select the serial port when prompted.</li>
-      <li>Wait for the flash to complete.</li>
+      <li>Wait for the flash to complete, then reconnect power.</li>
     </ol>
   </div>
 </body>
