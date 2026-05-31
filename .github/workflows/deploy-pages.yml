@@ -51,7 +51,7 @@ jobs:
       - name: Install PlatformIO Core
         run: pip install --upgrade platformio
 
-      - name: Enable ESP-NOW for installer build
+      - name: Enable ESP-NOW for temporary installer build
         working-directory: fluiddial
         run: |
           sed -i 's/; -DUSE_ESPNOW /-DUSE_ESPNOW /g' platformio.ini
