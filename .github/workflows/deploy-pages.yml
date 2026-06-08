@@ -1,4 +1,5 @@
 name: Deploy Web Installer to GitHub Pages
+#bump
 
 on:
   push:
