@@ -50,7 +50,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install PlatformIO Core
-        run: pip install --upgrade platformio
+        run: pip install --upgrade platformio intelhex
 
       - name: Enable ESP-NOW for temporary installer build
         working-directory: fluiddial
