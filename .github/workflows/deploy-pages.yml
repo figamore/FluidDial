@@ -29,7 +29,7 @@ jobs:
         name: Checkout FluidDial firmware
         with:
           repository: figamore/FluidDial
-          ref: feature/esp-now
+          ref: feature/harden-esp-now
           path: fluiddial
 
       - uses: actions/checkout@v4
